@@ -40,9 +40,36 @@ def part1(puzzle_input):
     print(result)
 
 
+def crt_draw(crt, cycle, x):
+    line = (cycle - 1) // 40
+    x_new = (cycle % 40) - 1
+    if x_new == -1:
+        x_new = 39
+    if x_new == x or x_new == x - 1 or x_new == x + 1:
+        crt[line][x_new] = '#'
+
+
+def crt_draw_result(crt):
+    for line in crt:
+        print(''.join(line))
+
+
 def part2(puzzle_input):
     """Solve part 2."""
-    pass
+    crt = [['.' for _ in range(40)] for _ in range(6)]
+    x_current = 1
+    cycle = 0
+    for line in puzzle_input:
+        if line.startswith('noop'):
+            cycle += 1
+            crt_draw(crt, cycle, x_current)
+        elif line.startswith('addx'):
+            _, value = line.split(' ')
+            for i in range(1, 2 + 1):
+                cycle += 1
+                crt_draw(crt, cycle, x_current)
+            x_current += int(value)
+    crt_draw_result(crt)
 
 
 def solve(puzzle_input):
